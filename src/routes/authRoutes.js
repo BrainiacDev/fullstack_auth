@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 
+router.get("/", (req, res) => {
+  res.render("home"); // Render the index view or a relevant page
+});
+
 router.get("/register", authController.getRegister);
 router.post("/register", authController.postRegister);
 
