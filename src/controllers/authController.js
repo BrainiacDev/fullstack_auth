@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const crypto = require("crypto");
-const {Resend} = require("resend");
+const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY); // Initialize Resend with your API key
 const querystring = require("querystring");
 require("dotenv").config();
@@ -91,11 +91,10 @@ exports.postForgotPassword = async (req, res) => {
   }
 };
 
-
 exports.getResetPassword = async (req, res) => {
-    //   const token = req.params.token; // Get the token from the URL
-    const encodedToken = req.params.token;
-    const token = Buffer.from(encodedToken, "base64url").toString("utf8");
+  //   const token = req.params.token; // Get the token from the URL
+  const encodedToken = req.params.token;
+  const token = Buffer.from(encodedToken, "base64url").toString("utf8");
 
   console.log("Received token:", token); // Log the token for debugging
 
@@ -111,7 +110,6 @@ exports.getResetPassword = async (req, res) => {
   res.render("resetPassword", { token: encodedToken }); // Pass the token to the view
 };
 
-
 exports.postResetPassword = async (req, res) => {
   const encodedToken = req.body.token;
   const token = Buffer.from(encodedToken, "base64url").toString("utf8");
@@ -120,8 +118,8 @@ exports.postResetPassword = async (req, res) => {
   // Check if passwords match
   if (password !== confirmPassword) {
     return res.render("resetPassword", {
-        alert: "Passwords do not match.",
-        token: encodedToken, // Pass the token back to the view
+      alert: "Passwords do not match.",
+      token: encodedToken, // Pass the token back to the view
     });
   }
 
@@ -142,4 +140,3 @@ exports.postResetPassword = async (req, res) => {
 
   res.redirect("/reset-success"); // Redirect to login after resetting the password
 };
-
