@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
 const path = require("path");
+const MongoStore = require("connect-mongo");
 require("dotenv").config();
 
 const authRoutes = require("./src/routes/authRoutes");
@@ -17,13 +18,19 @@ mongoose
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+
+// Session setup using MongoDB store
 app.use(
   session({
-    secret: "mysecret",
+    secret: process.env.SESSION_SECRET, // Store the session secret in environment variables
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI, // Store sessions in MongoDB
+    }),
   })
 );
+
 app.use(flash()); // Use flash messages
 
 app.use((req, res, next) => {
